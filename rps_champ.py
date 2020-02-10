@@ -20,6 +20,10 @@ class Player:
     def Play(self):
         self.choice = self.championship.rand_gen.randint(0, Championship.total_choices)
 
+    # string-equivalent for the player's choice
+    def Get_Choice_Name(self):
+        return Championship.choices[self.choice]
+
 
 
 class Championship:
@@ -46,14 +50,29 @@ class Championship:
         player_a.Play()
         player_b.Play()
 
-        if player_a.choice==0 and player_b.choice==Championship.total_choices - 1 :
-            return player_a
-        elif player_b.choice==0 and player_a.choice==Championship.total_choices - 1 :
+        # if player_a.choice==0 and player_b.choice==Championship.total_choices - 1 :
+        #     return player_a
+        # elif player_b.choice==0 and player_a.choice==Championship.total_choices - 1 :
+        #     return player_b
+        # elif player_a.choice > player_b.choice :
+        #     return player_a
+        # elif player_b.choice > player_a.choice :
+        #     return player_b
+        # else :
+        #     return 0
+        
+        if player_a.Get_Choice_Name()=="rock" and player_b.Get_Choice_Name()=="paper" :
             return player_b
-        elif player_a.choice > player_b.choice :
+        elif player_b.Get_Choice_Name()=="rock" and player_a.Get_Choice_Name()=="paper" :
             return player_a
-        elif player_b.choice > player_a.choice :
+        elif player_a.Get_Choice_Name()=="paper" and player_b.Get_Choice_Name()=="scissors" :
             return player_b
+        elif player_b.Get_Choice_Name()=="paper" and player_a.Get_Choice_Name()=="scissors" :
+            return player_a
+        elif player_a.Get_Choice_Name()=="scissors" and player_b.Get_Choice_Name()=="rock" :
+            return player_b
+        elif player_b.Get_Choice_Name()=="scissors" and player_a.Get_Choice_Name()=="rock" :
+            return player_a
         else :
             return 0
 
@@ -85,7 +104,7 @@ class Championship:
                     current_winner = self.Compete(self.players[i], self.winner)
                     # print("-")
                     # self.Print_One_Player(self.players[i])
-                    # self.Print_One_Player(self.players[i+1])
+                    # self.Print_One_Player(self.winner)
                     # print("---")
             self.winner = current_winner
     
@@ -95,7 +114,8 @@ class Championship:
 
     # print players, their assigned rand num, their choices
     def Print_One_Player(self, p):
-        print("Player", p.name, "was assigned", str(p.rand_number), "and played", str(Championship.choices[p.choice]))
+        # print("Player", p.name, "was assigned", str(p.rand_number), "and played", str(Championship.choices[p.choice]))
+        print("Player", p.name, "was assigned", str(p.rand_number), "and played", p.Get_Choice_Name())
     def Print_All_Players(self):
         for p in self.players :
             self.Print_One_Player(p)
@@ -118,5 +138,5 @@ if __name__ == "__main__":
     championship.Add_Players()
     # championship.Print_All_Players()
     championship.Simulate_Simple() 
-    championship.Print_All_Players()
     championship.Print_Winner()
+    championship.Print_All_Players()
