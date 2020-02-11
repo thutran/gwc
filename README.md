@@ -13,5 +13,8 @@ launch by executing `jupyter notebook` inside the code directory
 
 
 ### Online
-There is a Binder (mybinder.org) build for this notebook:
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/thutran/gwc-functions/master?filepath=functions.ipynb)
+There is a Binder (mybinder.org) build for this directory:
+
+[![Binder-directory](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/thutran/gwc-functions/master)
+
+[![Binder-functions_notebook](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/thutran/gwc-functions/master?filepath=functions.ipynb)
