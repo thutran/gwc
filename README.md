@@ -5,6 +5,8 @@ Simple usage of conditionals to implement rock-paper-scissors game rules:
 2. Player 1 will play the `player1_number * player2_number % 3`-th element in the choices array. Player 2 will play the `(player1_number + player2_number) % 3`-th element in the choices array.
 3. Use conditionals to decide the result of the match
 
+A player can easily choose an integer which helps them win the match if they know their opponent's number and the order of elements in the choices array.
+
 
 # Rock-Paper-Scissors Championship
 

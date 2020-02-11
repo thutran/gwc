@@ -3,8 +3,8 @@ def main():
     p1_number = input("Player 1 chooses an integer: ")
     p2_number = input("Player 2 chooses an integer: ")
 
-    p1_choice = choices[int(p1_number) * int(p2_number) % 3] # modulo with a negative number is a bit tricky but should be allowed
-    p2_choice = choices[(int(p2_number) + int(p1_number)) % 3]
+    p1_choice = choices[int(p1_number) * int(p2_number) % len(choices)] # modulo with a negative number is a bit tricky but should be allowed
+    p2_choice = choices[(int(p2_number) + int(p1_number)) % len(choices)]
     print("Player 1 plays", p1_choice)
     print("Player 2 plays", p2_choice)
 
