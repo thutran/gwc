@@ -28,7 +28,7 @@ class Player:
 
 
 class Championship:
-    # seed = 1111
+    seed = 1111
     choices = ["rock", "paper", "scissors"]
     total_choices = len(choices)
     choices_ids = range(total_choices)
@@ -36,7 +36,8 @@ class Championship:
     # initializer
     def __init__(self, total_players):
         self.total_players = total_players
-        self.rand_gen = random.RandomState(datetime.now().microsecond)
+        self.rand_gen = random.RandomState(Championship.seed)
+        # self.rand_gen = random.RandomState(datetime.now().microsecond)
         self.players = []
         self.winner = 0
 
@@ -48,6 +49,9 @@ class Championship:
 
     # game rule
     def Compete(self, player_a, player_b):
+        if player_a == player_b:
+            return player_a
+
         player_a.Play()
         player_b.Play()
         print("-")
@@ -107,16 +111,21 @@ class Championship:
             return winner
         # recursively call Arrange_Players
         elif first < last - 1:
-            winner = 0
+            champ = 0
+            current_winner = 0
             mid = self.Partition(players, first, last)
             winner1 = self.Arrange_Players(players, first, mid - 1)
             winner2 = self.Arrange_Players(players, mid + 1, last)
-            while winner == 0:
-                winner = self.Compete(winner1, winner2)
-            return winner
+            while current_winner == 0:
+                current_winner = self.Compete(players[mid], winner1)
+            while champ == 0:
+                champ = self.Compete(current_winner, winner2)
+            return champ
         # case only 1 element (first >= last)
-        else :
+        elif first < len(players) - 1 : 
             return players[first]
+        else:
+            return players[last]
 
     # quicksort-like algorithm to assign players into pairs
     def Simulate_Quicksort_Like(self):
