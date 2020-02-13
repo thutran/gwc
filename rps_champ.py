@@ -1,13 +1,6 @@
 from numpy import random
-from enum import Enum 
 from datetime import datetime
 
-class Choice(Enum):
-    ROCK, PAPER, SCISSORS, SIZE = range(4)
-    
-    # convert int value to key name
-    
-    
 class Player:
     # initializer
     def __init__(self, champ, name, rand_no):
@@ -36,8 +29,8 @@ class Championship:
     # initializer
     def __init__(self, total_players):
         self.total_players = total_players
-        self.rand_gen = random.RandomState(Championship.seed)
-        # self.rand_gen = random.RandomState(datetime.now().microsecond)
+        # self.rand_gen = random.RandomState(Championship.seed)
+        self.rand_gen = random.RandomState(datetime.now().microsecond)
         self.players = []
         self.winner = 0
 
