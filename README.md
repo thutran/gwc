@@ -1,5 +1,13 @@
+# Against-Computer Match
+Simple usage of conditionals to implement rock-paper-scissors game rules for a player-vs-computer match:
+
+1. The player choose either "rock" or "paper" or "scissors"
+2. Randomly generate a choice for the computer
+3. Use conditionals to decide the result of the match
+
+
 # Product-Addition Match
-Simple usage of conditionals to implement rock-paper-scissors game rules: 
+Simple usage of conditionals to implement rock-paper-scissors game rules for a 2-player match: 
 
 1. Each player chooses an integer (input). 
 2. Player 1 will play the `player1_number * player2_number % 3`-th element in the choices array. Player 2 will play the `(player1_number + player2_number) % 3`-th element in the choices array.
