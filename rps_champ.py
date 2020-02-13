@@ -18,7 +18,8 @@ class Player:
 
     # choose among rock, paper, scissors
     def Play(self):
-        self.choice = self.championship.rand_gen.randint(0, Championship.total_choices)
+        # self.choice = self.championship.rand_gen.randint(0, Championship.total_choices)
+        self.choice = self.championship.rand_gen.randint(0, 100) % Championship.total_choices
 
     # string-equivalent for the player's choice
     def Get_Choice_Name(self):
@@ -42,24 +43,17 @@ class Championship:
     def Add_Players(self):
         for i in range (total_players):
             name = input("Player " + str(i + 1) + " name: ")
-            self.players.append(Player(self, name, self.rand_gen.uniform()*10.0) )
+            self.players.append(Player(self, name, self.rand_gen.uniform()*100.0) )
             
 
     # game rule
     def Compete(self, player_a, player_b):
         player_a.Play()
         player_b.Play()
-
-        # if player_a.choice==0 and player_b.choice==Championship.total_choices - 1 :
-        #     return player_a
-        # elif player_b.choice==0 and player_a.choice==Championship.total_choices - 1 :
-        #     return player_b
-        # elif player_a.choice > player_b.choice :
-        #     return player_a
-        # elif player_b.choice > player_a.choice :
-        #     return player_b
-        # else :
-        #     return 0
+        print("-")
+        self.Print_One_Player(player_a)
+        self.Print_One_Player(player_b)
+        print("---")
         
         if player_a.Get_Choice_Name()=="rock" and player_b.Get_Choice_Name()=="paper" :
             return player_b
@@ -76,21 +70,6 @@ class Championship:
         else :
             return 0
 
-        # if player_a.choice==Choice.ROCK and player_b.choice==Choice.PAPER :
-        #     return player_b
-        # elif player_b.choice==Choice.ROCK and player_a.choice==Choice.PAPER :
-        #     return player_a
-        # elif player_a.choice==Choice.PAPER and player_b.choice==Choice.SCISSORS :
-        #     return player_b
-        # elif player_b.choice==Choice.PAPER and player_a.choice==Choice.SCISSORS :
-        #     return player_a
-        # elif player_a.choice==Choice.SCISSORS and player_b.choice==Choice.ROCK :
-        #     return player_b
-        # elif player_b.choice==Choice.SCISSORS and player_a.choice==Choice.ROCK :
-        #     return player_a
-        # else :
-        #     return 0
-
 
     # simple championship, very unfair order of who plays against whom
     def Simulate_Simple(self):
@@ -102,19 +81,50 @@ class Championship:
                     current_winner = self.winner
                 else :
                     current_winner = self.Compete(self.players[i], self.winner)
-                    # print("-")
-                    # self.Print_One_Player(self.players[i])
-                    # self.Print_One_Player(self.winner)
-                    # print("---")
             self.winner = current_winner
-    
+
+
+    # quicksort-like algorithm to assign players into pairs
+    # partition the players list using pivot value
+    def Partition(self, players, first, last):
+        pivot = players[last].rand_number
+        swap_index = first 
+        for i in range(first, last):
+            # swap players so that players with small numbers are pushed to the first half of the list
+            if players[i].rand_number < pivot :
+                players[swap_index], players[i] = players[i], players[swap_index]
+                swap_index += 1
+        players[swap_index], players[last] = players[last], players[swap_index]
+        return swap_index
+
+    # sort player list and compete
+    def Arrange_Players(self, players, first, last):
+        # case only 2 elements --> compete
+        if first == last - 1:
+            winner = 0
+            while winner == 0:
+                winner = self.Compete(players[first], players[last])
+            return winner
+        # recursively call Arrange_Players
+        elif first < last - 1:
+            winner = 0
+            mid = self.Partition(players, first, last)
+            winner1 = self.Arrange_Players(players, first, mid - 1)
+            winner2 = self.Arrange_Players(players, mid + 1, last)
+            while winner == 0:
+                winner = self.Compete(winner1, winner2)
+            return winner
+        # case only 1 element (first >= last)
+        else :
+            return players[first]
+
     # quicksort-like algorithm to assign players into pairs
     def Simulate_Quicksort_Like(self):
-        pass
+        self.winner = self.Arrange_Players(self.players, 0, len(self.players) - 1)
+
 
     # print players, their assigned rand num, their choices
     def Print_One_Player(self, p):
-        # print("Player", p.name, "was assigned", str(p.rand_number), "and played", str(Championship.choices[p.choice]))
         print("Player", p.name, "was assigned", str(p.rand_number), "and played", p.Get_Choice_Name())
     def Print_All_Players(self):
         for p in self.players :
@@ -136,7 +146,8 @@ if __name__ == "__main__":
 
     championship = Championship(total_players)
     championship.Add_Players()
-    # championship.Print_All_Players()
-    championship.Simulate_Simple() 
-    championship.Print_Winner()
     championship.Print_All_Players()
+    # championship.Simulate_Simple() 
+    championship.Simulate_Quicksort_Like()
+    championship.Print_Winner()
+    # championship.Print_All_Players()
