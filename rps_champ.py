@@ -94,15 +94,18 @@ class Championship:
         players[swap_index], players[last] = players[last], players[swap_index]
         return swap_index
 
-    # sort player list and compete
+    # sort player list, compete, and return the final winner
     def Arrange_Players(self, players, first, last):
-        # case only 2 elements --> compete
-        if first == last - 1:
+        # case only 1 element
+        if first == last:
+            return players[first]
+        # case 2 elements --> compete
+        elif first == last - 1:
             winner = 0
             while winner == 0:
                 winner = self.Compete(players[first], players[last])
             return winner
-        # recursively call Arrange_Players
+        # case > 2 players --> recursively call Arrange_Players
         elif first < last - 1:
             champ = 0
             current_winner = 0
@@ -110,15 +113,19 @@ class Championship:
             winner1 = self.Arrange_Players(players, first, mid - 1)
             winner2 = self.Arrange_Players(players, mid + 1, last)
             while current_winner == 0:
-                current_winner = self.Compete(players[mid], winner1)
+                if winner1 is None :
+                    current_winner = players[mid]
+                else :
+                    current_winner = self.Compete(players[mid], winner1)
             while champ == 0:
-                champ = self.Compete(current_winner, winner2)
+                if winner2 is None :
+                    champ = current_winner
+                else :
+                    champ = self.Compete(current_winner, winner2)
             return champ
-        # case only 1 element (first >= last)
-        elif first < len(players) - 1 : 
-            return players[first]
-        else:
-            return players[last]
+        # case first > last --> sorting completed
+        else : 
+            return None
 
     # quicksort-like algorithm to assign players into pairs
     def Simulate_Quicksort_Like(self):
