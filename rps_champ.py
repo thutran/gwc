@@ -1,5 +1,5 @@
-from numpy import random
-from datetime import datetime
+from numpy import random # rand_number for players, RandomState for Championship
+from datetime import datetime # random seed for Championship
 
 class Player:
     # initializer
@@ -7,32 +7,32 @@ class Player:
         self.championship = champ
         self.name = name
         self.rand_number = rand_no
-        self.choice = 0
+        self.choice = None
 
     # choose among rock, paper, scissors
     def Play(self):
-        # self.choice = self.championship.rand_gen.randint(0, Championship.total_choices)
         self.choice = self.championship.rand_gen.randint(0, 100) % Championship.total_choices
 
     # string-equivalent for the player's choice
     def Get_Choice_Name(self):
+        if self.choice is None :
+            return "nothing"
         return Championship.choices[self.choice]
 
 
 
 class Championship:
-    seed = 1111
     choices = ["rock", "paper", "scissors"]
     total_choices = len(choices)
     choices_ids = range(total_choices)
     
     # initializer
-    def __init__(self, total_players):
+    def __init__(self, total_players, seed=None):
         self.total_players = total_players
-        # self.rand_gen = random.RandomState(Championship.seed)
-        self.rand_gen = random.RandomState(datetime.now().microsecond)
+        self.seed = seed if seed is not None else datetime.now().microsecond
+        self.rand_gen = random.RandomState(self.seed)
         self.players = []
-        self.winner = 0
+        self.champion = None
 
     def Add_Players(self):
         for i in range (total_players):
@@ -40,7 +40,9 @@ class Championship:
             self.players.append(Player(self, name, self.rand_gen.uniform()*100.0) )
             
 
-    # game rule
+    # game rules
+    # return the winner (player object) if any
+    # return None if tied
     def Compete(self, player_a, player_b):
         if player_a == player_b:
             return player_a
@@ -65,24 +67,24 @@ class Championship:
         elif player_b.Get_Choice_Name()=="scissors" and player_a.Get_Choice_Name()=="rock" :
             return player_a
         else :
-            return 0
+            return None
 
 
-    # simple championship, very unfair order of who plays against whom
+    # simple championship
+    # very unfair order of who plays against whom
     def Simulate_Simple(self):
-        self.winner = self.players[0]
-        for i in range(len(self.players)): 
-            current_winner = 0
-            while current_winner==0 :
-                if self.winner == self.players[i] : 
-                    current_winner = self.winner
-                else :
-                    current_winner = self.Compete(self.players[i], self.winner)
-            self.winner = current_winner
+        self.champion = self.players[0]
+        for p in self.players :
+            current_winner = None
+            while current_winner is None :
+                current_winner = self.Compete(self.champion, p)
+            self.champion = current_winner
 
 
     # quicksort-like algorithm to assign players into pairs
+
     # partition the players list using pivot value
+    # return the final index of the pivot in the list
     def Partition(self, players, first, last):
         pivot = players[last].rand_number
         swap_index = first 
@@ -101,35 +103,35 @@ class Championship:
             return players[first]
         # case 2 elements --> compete
         elif first == last - 1:
-            winner = 0
-            while winner == 0:
+            winner = None
+            while winner is None:
                 winner = self.Compete(players[first], players[last])
             return winner
         # case > 2 players --> recursively call Arrange_Players
         elif first < last - 1:
-            champ = 0
-            current_winner = 0
+            final_winner = None
+            current_winner = None
             mid = self.Partition(players, first, last)
             winner1 = self.Arrange_Players(players, first, mid - 1)
             winner2 = self.Arrange_Players(players, mid + 1, last)
-            while current_winner == 0:
+            while current_winner is None:
                 if winner1 is None :
                     current_winner = players[mid]
                 else :
                     current_winner = self.Compete(players[mid], winner1)
-            while champ == 0:
+            while final_winner is None:
                 if winner2 is None :
-                    champ = current_winner
+                    final_winner = current_winner
                 else :
-                    champ = self.Compete(current_winner, winner2)
-            return champ
+                    final_winner = self.Compete(current_winner, winner2)
+            return final_winner
         # case first > last --> sorting completed
         else : 
             return None
 
     # quicksort-like algorithm to assign players into pairs
     def Simulate_Quicksort_Like(self):
-        self.winner = self.Arrange_Players(self.players, 0, len(self.players) - 1)
+        self.champion = self.Arrange_Players(self.players, 0, len(self.players) - 1)
 
 
     # print players, their assigned rand num, their choices
@@ -140,9 +142,9 @@ class Championship:
             self.Print_One_Player(p)
 
     # print final winner
-    def Print_Winner(self):
-        if self.winner != 0 :
-            print("Player", self.winner.name, "is the champion!")
+    def Print_Champion(self):
+        if self.champion is not None :
+            print("Player", self.champion.name, "is the champion!")
         else :
             print("No champion is found yet.")
 
@@ -153,10 +155,12 @@ class Championship:
 if __name__ == "__main__":
     total_players = int(input("Total number of players: "))
 
-    championship = Championship(total_players)
+    # create a championship instance
+    championship = Championship(total_players, 1111) # seed number 1111
+    # championship = Championship(total_players) # random seed
+
     championship.Add_Players()
     championship.Print_All_Players()
     # championship.Simulate_Simple() 
     championship.Simulate_Quicksort_Like()
-    championship.Print_Winner()
-    # championship.Print_All_Players()
+    championship.Print_Champion()
