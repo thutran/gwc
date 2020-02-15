@@ -18,6 +18,10 @@ class Player:
         if self.choice is None :
             return "nothing"
         return Championship.choices[self.choice]
+    
+    # string representation of a player object
+    def __str__(self):
+        return "Player " + self.name + " was assigned " + str(self.rand_number) + " and played " + self.Get_Choice_Name()
 
 
 
@@ -44,14 +48,20 @@ class Championship:
     # return the winner (player object) if any
     # return None if tied
     def Compete(self, player_a, player_b):
+        if player_a is None and player_b is None:
+            raise Exception("Championship.Compete(player_a, player_b) needs at least one player object as a parameter")
+        
+        if player_a is None or player_b is None:
+            return player_a if player_b is None else player_b 
+
         if player_a == player_b:
             return player_a
 
         player_a.Play()
         player_b.Play()
         print("-")
-        self.Print_One_Player(player_a)
-        self.Print_One_Player(player_b)
+        print(player_a)
+        print(player_b)
         print("---")
         
         if player_a.Get_Choice_Name()=="rock" and player_b.Get_Choice_Name()=="paper" :
@@ -110,20 +120,21 @@ class Championship:
         # case > 2 players --> recursively call Arrange_Players
         elif first < last - 1:
             final_winner = None
-            current_winner = None
+            finalist = None
             mid = self.Partition(players, first, last)
             winner1 = self.Arrange_Players(players, first, mid - 1)
             winner2 = self.Arrange_Players(players, mid + 1, last)
-            while current_winner is None:
+            while finalist is None:
                 if winner1 is None :
-                    current_winner = players[mid]
+                    finalist = players[mid]
                 else :
-                    current_winner = self.Compete(players[mid], winner1)
+                    finalist = self.Compete(players[mid], winner1)
             while final_winner is None:
                 if winner2 is None :
-                    final_winner = current_winner
+                    final_winner = finalist
                 else :
-                    final_winner = self.Compete(current_winner, winner2)
+                    final_winner = self.Compete(finalist, winner2)
+
             return final_winner
         # case first > last --> sorting completed
         else : 
@@ -135,11 +146,9 @@ class Championship:
 
 
     # print players, their assigned rand num, their choices
-    def Print_One_Player(self, p):
-        print("Player", p.name, "was assigned", str(p.rand_number), "and played", p.Get_Choice_Name())
     def Print_All_Players(self):
         for p in self.players :
-            self.Print_One_Player(p)
+            print(p)
 
     # print final winner
     def Print_Champion(self):
@@ -156,8 +165,8 @@ if __name__ == "__main__":
     total_players = int(input("Total number of players: "))
 
     # create a championship instance
-    championship = Championship(total_players, 1111) # seed number 1111
-    # championship = Championship(total_players) # random seed
+    # championship = Championship(total_players, 1111) # seed number 1111
+    championship = Championship(total_players) # random seed
 
     championship.Add_Players()
     championship.Print_All_Players()
