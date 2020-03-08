@@ -1,1 +1,6 @@
 # Girls Who Code at Penn State
+
+Folders within this repository:
+* `rps`: examples for conditionals
+* `functions`: Jupyter notebooks for functions
+* `turtle`: trying out `turtle` module
