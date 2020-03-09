@@ -6,4 +6,4 @@ Folders within this repository:
 * `turtle`: trying out `turtle` module
 * `review`: materials for the review session
 
-Binder build for this repository: [![Binder-directory](https://mybinder.org/v2/gh/thutran/gwc/master)
+Binder build for this repository: [![Binder-repo](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/thutran/gwc/master)
