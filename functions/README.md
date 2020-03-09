@@ -15,6 +15,7 @@ launch by executing `jupyter notebook` inside the code directory
 ### Online
 There is a Binder (mybinder.org) build for this repository:
 
-The whole repository: [![Binder-directory](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/thutran/gwc/d36f8265aff83f44f8cf0ff8a3fc37f01be3c5ea)
+The whole repository: [![Binder-directory](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/thutran/gwc/master)
 
-functions.ipynb: [![Binder-functions_notebook](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/thutran/gwc/d36f8265aff83f44f8cf0ff8a3fc37f01be3c5ea?filepath=functions%2Ffunctions.ipynb)
+functions.ipynb: [![Binder-functions_notebook](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/thutran/gwc/master?filepath=functions%2Ffunctions.ipynb)
+
