@@ -5,9 +5,9 @@ Will learning how to write a function in Python help you host a smoothies party?
 ### Local
 You would need `ipython` and `notebook`. Installation can be done via `pip`:
 
-`pip install ipython`
+`python3 -m pip install ipython`
 
-`pip install notebook`
+`python3 -m pip install notebook`
 
 launch by executing `jupyter notebook` inside the code directory
 
